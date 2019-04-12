@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Lista serwerów</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        #servers {
+            display: table;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+        #server {
+            display: table-row;
+            border: 1px solid black;
+        }
+
+        #server > * {
+            display: table-cell;
+            border: 1px solid black;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="servers">
+    <div id="server" th:each="server : ${servers}">
+        <div>
+            <span th:text="${server.id}"></span>
+        </div>
+        <div>
+            <span th:text="${server.name}"></span>
+        </div>
+        <div>
+            <a th:href="@{/server/edit/{id}(id=${server.id})}">Edytuj</a>
+        </div>
+        <div>
+            <a th:href="@{/server/delete/{id}(id=${server.id})}">Usuń</a>
+        </div>
+    </div>
+</div>
+
+<!--/*@thymesVar id="serverAddForm" type="pl.kliniewski.mclist.mclist.server.ServerForm"*/-->
+<form th:if="${serverAddForm != null}" th:action="@{/server/add}" th:object="${serverAddForm}" method="post">
+    <label>
+        Nazwa serwera:
+        <input type="text" th:field="*{name}" minlength="6" maxlength="32"/>
+    </label>
+    <button type="submit">Dodaj serwer</button>
+</form>
+
+<!--/*@thymesVar id="server" type="pl.kliniewski.mclist.mclist.server.Server"*/-->
+<!--/*@thymesVar id="serverEditForm" type="pl.kliniewski.mclist.mclist.server.ServerForm"*/-->
+<form th:if="${serverEditForm != null and server != null}" th:action="@{/server/edit/{id}(id=${server.id})}" th:object="${serverEditForm}" method="post">
+    <label>
+        Nowa nazwa serwera:
+        <input type="text" th:field="*{name}" minlength="6" maxlength="32"/>
+    </label>
+    <button type="submit">Edytuj serwer</button>
+</form>
+</body>
+</html>
